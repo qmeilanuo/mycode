@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        #box {
+            width: 500px;
+            height: 400px;
+            border: 1px solid red;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        #box img {
+            width: 100%;
+            height: 100%;
+        }
+        
+        span {
+            width: 20px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            background: #ccc;
+        }
+        
+        #zuo {
+            /* width: 40px;
+            height: 80px; */
+            position: absolute;
+            top: 50%;
+        }
+        
+        #you {
+            position: absolute;
+            top: 50%;
+            left: 96%;
+        }
+        
+        #box1 {
+            width: 500px;
+            height: 100px;
+            border: 1px solid red;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        #box1 li {
+            float: left;
+            margin-left: 17px;
+            margin-top: 10px;
+        }
+        
+        #box1 img {
+            width: 80px;
+            height: 80px;
+        }
+        
+        #xiazuo {
+            position: absolute;
+            top: 35%;
+            left: 0;
+        }
+        
+        #xiayou {
+            position: absolute;
+            top: 35%;
+            left: 96%;
+        }
+        
+        .active {
+            border: 2px solid blue;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 1、根据效果图模拟数据（10分）
+    2、动态渲染轮播图结构（10分）
+    3、点击缩略图左按钮，缩略图及大图向上切换（10分）
+    4、点击缩略图右按钮，缩略图及大图向下切换（10分）
+    5、点击大图左按钮，缩略图及大图向上切换（10分）
+    6、点击大图右按钮，缩略图及大图向下切换（10分）
+    7、点击右按钮到最后一张图片，返回到第一张（10分）
+    8、点击左按钮到第一张图片，返回到最后一张（10分）
+    9、点击按钮切换缩略图及大图要封装成一个change函数来实现（10分）
+    10、正确的监听事件（10分） -->
+    <div id="box">
+        <img src="img/1.jpg" alt="">
+        <span id="zuo"><</span><span id="you">></span>
+    </div>
+    <div id="box1">
+        <ul>
+            <li><img src="" alt="" class="active"></li>
+            <li><img src="" alt=""></li>
+            <li><img src="" alt=""></li>
+            <li><img src="" alt=""></li>
+            <li><img src="" alt=""></li>
+        </ul>
+        <span id="xiazuo"><</span><span id="xiayou">></span>
+    </div>
+    <script>
+        var srr = [{
+            srca: "img/1.jpg"
+        }, {
+            srca: "img/2.jpg"
+        }, {
+            srca: "img/3.jpg"
+        }, {
+            srca: "img/4.jpg"
+        }, {
+            srca: "img/5.jpg"
+        }]
+
+        function $(id) { //封装获取ID函数
+            return document.getElementById(id)
+        }
+        var imgs = document.querySelectorAll("#box1 img")
+        var img = $("box").querySelector("img")
+            // console.log(img)
+        imgs.forEach(function(item, index) { //渲染图片
+            item.src = srr[index].srca
+        })
+        var cotton = 0 //绑定下标
+        var s = 0 //绑定前一个下标
+        function change(a, b) { //封装函数
+            a.onclick = function() { //设置右按键
+                if (cotton >= srr.length - 1) { //判断图片长度大于数据最大值是变为最小值
+                    cotton = -1
+                }
+                cotton++ //运行一次加1
+                img.src = srr[cotton].srca //运行一次上方图片的内容变动一次
+                imgs[s].classList.remove("active") //删除上一个元素的类名
+                s = cotton
+                imgs[cotton].classList.add("active") //添加当前元素的类名
+
+            }
+            b.onclick = function() {
+                if (cotton <= 0) {
+                    cotton = srr.length
+                }
+                cotton--
+                img.src = srr[cotton].srca
+                imgs[s].classList.remove("active")
+                s = cotton
+                imgs[cotton].classList.add("active")
+
+            }
+        }
+        change($("you"), $("zuo")) //调用上左右按键
+        change($("xiayou"), $("xiazuo")) //调用下左右按键
+    </script>
+</body>
+
+</html>
